@@ -176,14 +176,14 @@ export default class ReactCalendarTimeline extends Component {
     className: '',
     keys: defaultKeys,
     timeSteps: defaultTimeSteps,
-    headerRef: () => {},
-    scrollRef: () => {},
+    headerRef: () => { },
+    scrollRef: () => { },
 
     // if you pass in visibleTimeStart and visibleTimeEnd, you must also pass onTimeChange(visibleTimeStart, visibleTimeEnd),
     // which needs to update the props visibleTimeStart and visibleTimeEnd to the ones passed
     visibleTimeStart: null,
     visibleTimeEnd: null,
-    onTimeChange: function(
+    onTimeChange: function (
       visibleTimeStart,
       visibleTimeEnd,
       updateScrollCanvas
@@ -247,7 +247,7 @@ export default class ReactCalendarTimeline extends Component {
 
     this.getSelected = this.getSelected.bind(this)
     this.hasSelectedItem = this.hasSelectedItem.bind(this)
-    this.isItemSelected= this.isItemSelected.bind(this)
+    this.isItemSelected = this.isItemSelected.bind(this)
 
     let visibleTimeStart = null
     let visibleTimeEnd = null
@@ -282,7 +282,8 @@ export default class ReactCalendarTimeline extends Component {
       dragGroupTitle: null,
       resizeTime: null,
       resizingItem: null,
-      resizingEdge: null
+      resizingEdge: null,
+      dragStart: null,
     }
 
     const canvasWidth = getCanvasWidth(this.state.width, props.buffer);
@@ -415,13 +416,13 @@ export default class ReactCalendarTimeline extends Component {
     // Check the scroll is correct
     const scrollLeft = Math.round(
       this.state.width *
-        (this.state.visibleTimeStart - this.state.canvasTimeStart) /
-        newZoom
+      (this.state.visibleTimeStart - this.state.canvasTimeStart) /
+      newZoom
     )
     const componentScrollLeft = Math.round(
       prevState.width *
-        (prevState.visibleTimeStart - prevState.canvasTimeStart) /
-        oldZoom
+      (prevState.visibleTimeStart - prevState.canvasTimeStart) /
+      oldZoom
     )
 
     if (componentScrollLeft !== scrollLeft) {
@@ -709,6 +710,10 @@ export default class ReactCalendarTimeline extends Component {
     )
   }
 
+  handleRowMouseDown = (e) => {
+    this.setState({ dragStart: this.getTimeFromRowClickEvent(e) })
+  }
+
   handleRowClick = (e, rowIndex) => {
     // shouldnt this be handled by the user, as far as when to deselect an item?
     if (this.hasSelectedItem()) {
@@ -722,7 +727,8 @@ export default class ReactCalendarTimeline extends Component {
       this.props.groups[rowIndex],
       this.props.keys.groupIdKey
     )
-    this.props.onCanvasClick(groupId, time, e)
+
+    this.props.onCanvasClick(groupId, this.state.dragStart, time, e)
   }
 
   handleRowDoubleClick = (e, rowIndex) => {
@@ -761,6 +767,7 @@ export default class ReactCalendarTimeline extends Component {
         groupHeights={groupHeights}
         clickTolerance={this.props.clickTolerance}
         onRowClick={this.handleRowClick}
+        onRowMouseDown={this.handleRowMouseDown}
         onRowDoubleClick={this.handleRowDoubleClick}
         horizontalLineClassNamesForGroup={
           this.props.horizontalLineClassNamesForGroup
@@ -856,8 +863,8 @@ export default class ReactCalendarTimeline extends Component {
    * refer to for explanation https://github.com/gaearon/react-hot-loader#checking-element-types
    */
   isTimelineHeader = (child) => {
-    if(child.type === undefined) return false
-    return child.type.secretKey ===TimelineHeaders.secretKey
+    if (child.type === undefined) return false
+    return child.type.secretKey === TimelineHeaders.secretKey
   }
 
   childrenWithProps(
@@ -935,12 +942,12 @@ export default class ReactCalendarTimeline extends Component {
       : this.props.selected || [];
   }
 
-  hasSelectedItem(){
-    if(!Array.isArray(this.props.selected)) return !!this.state.selectedItem
+  hasSelectedItem() {
+    if (!Array.isArray(this.props.selected)) return !!this.state.selectedItem
     return this.props.selected.length > 0
   }
 
-  isItemSelected(itemId){
+  isItemSelected(itemId) {
     const selectedItems = this.getSelected()
     return selectedItems.some(i => i === itemId)
   }
