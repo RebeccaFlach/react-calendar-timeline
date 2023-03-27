@@ -6,12 +6,18 @@ class PreventClickOnDrag extends Component {
     children: PropTypes.element.isRequired,
     onClick: PropTypes.func.isRequired,
     clickTolerance: PropTypes.number.isRequired,
-    onMouseDown: PropTypes.func.isRequired
+    onMouseDown: PropTypes.func.isRequired,
+    onMouseMove: PropTypes.func.isRequired
   }
 
   handleMouseDown = evt => {
     this.originClickX = evt.clientX;
     this.props.onMouseDown(evt)
+  }
+
+  handleMouseMove = evt => {
+    if (this.originClickX)
+      this.props.onMouseMove(evt)
   }
 
   handleClick = evt => {
@@ -27,6 +33,7 @@ class PreventClickOnDrag extends Component {
     const childElement = React.Children.only(this.props.children)
     return React.cloneElement(childElement, {
       onMouseDown: this.handleMouseDown,
+      onMouseMove: this.handleMouseMove,
       onMouseUp: this.handleMouseUp,
       onClick: this.handleClick
     })

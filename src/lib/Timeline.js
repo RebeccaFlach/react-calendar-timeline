@@ -71,6 +71,8 @@ export default class ReactCalendarTimeline extends Component {
     onCanvasContextMenu: PropTypes.func,
     onZoom: PropTypes.func,
     onItemDrag: PropTypes.func,
+    onCanvasMouseDown: PropTypes.func,
+    onCanvasMouseMove: PropTypes.func,
 
     moveResizeValidator: PropTypes.func,
 
@@ -710,9 +712,19 @@ export default class ReactCalendarTimeline extends Component {
     )
   }
 
-  handleRowMouseDown = (e) => {
+  handleRowMouseDown = (e, rowIndex) => {
     this.setState({ dragStart: this.getTimeFromRowClickEvent(e) })
+    const groupId = _get(
+      this.props.groups[rowIndex],
+      this.props.keys.groupIdKey
+    )
+    this.props.onCanvasMouseDown(this.getTimeFromRowClickEvent(e), groupId)
   }
+
+  handleRowMouseMove = (e) => {
+    this.props.onCanvasMouseMove(this.getTimeFromRowClickEvent(e))
+  }
+
 
   handleRowClick = (e, rowIndex) => {
     // shouldnt this be handled by the user, as far as when to deselect an item?
@@ -768,6 +780,7 @@ export default class ReactCalendarTimeline extends Component {
         clickTolerance={this.props.clickTolerance}
         onRowClick={this.handleRowClick}
         onRowMouseDown={this.handleRowMouseDown}
+        onRowMouseMove={this.handleRowMouseMove}
         onRowDoubleClick={this.handleRowDoubleClick}
         horizontalLineClassNamesForGroup={
           this.props.horizontalLineClassNamesForGroup
@@ -789,6 +802,7 @@ export default class ReactCalendarTimeline extends Component {
   ) {
     return (
       <Items
+        // pointerEvents={this.state.dragStart === null}
         canvasTimeStart={canvasTimeStart}
         canvasTimeEnd={canvasTimeEnd}
         canvasWidth={canvasWidth}
