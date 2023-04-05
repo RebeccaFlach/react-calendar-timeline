@@ -11,8 +11,10 @@ class PreventClickOnDrag extends Component {
   }
 
   handleMouseDown = evt => {
-    this.originClickX = evt.clientX;
-    this.props.onMouseDown(evt)
+    if (evt.button === 0) { //left click
+      this.originClickX = evt.clientX;
+      this.props.onMouseDown(evt)
+    }
   }
 
   handleMouseMove = evt => {
