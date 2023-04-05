@@ -31,7 +31,7 @@ $weekend: rgba(250, 246, 225, 0.5);
     display: inline-block;
     white-space: normal; // was set to nowrap in .rct-outer
     vertical-align: top;
-    overflow-x: scroll;
+    overflow-x: hidden;
     overflow-y: hidden;
     -ms-touch-action: none;
     touch-action: none;
@@ -82,6 +82,7 @@ $weekend: rgba(250, 246, 225, 0.5);
       &.rct-sidebar-row-odd {
         background: $row-background-odd;
       }
+
       &.rct-sidebar-row-even {
         background: $row-background-even;
       }
@@ -95,9 +96,11 @@ $weekend: rgba(250, 246, 225, 0.5);
       position: absolute;
       border-left: 1px solid $border-color;
       z-index: 30;
+
       &.rct-vl-first {
         border-left-width: 2px;
       }
+
       &.rct-day-6,
       &.rct-day-0 {
         background: $weekend;
@@ -117,9 +120,11 @@ $weekend: rgba(250, 246, 225, 0.5);
       box-sizing: border-box;
       z-index: 40;
     }
+
     .rct-hl-odd {
       background: $row-background-odd;
     }
+
     .rct-hl-even {
       background: $row-background-even;
     }
@@ -142,12 +147,12 @@ $weekend: rgba(250, 246, 225, 0.5);
     cursor: pointer;
     font-size: 14px;
     background-color: rgb(240, 240, 240);
-    border-left:  2px solid #bbb;
+    border-left: 2px solid #bbb;
   }
 
   .rct-dateHeader-primary {
     background-color: initial;
-    border-left:  1px solid #bbb;
+    border-left: 1px solid #bbb;
     border-right: 1px solid #bbb;
     color: #fff
   }

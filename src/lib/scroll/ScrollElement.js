@@ -33,16 +33,16 @@ class ScrollElement extends Component {
   refHandler = el => {
     this.scrollComponent = el
     this.props.scrollRef(el)
-    if(el){
-      el.addEventListener('wheel', this.handleWheel, {passive: false});
+    if (el) {
+      el.addEventListener('wheel', this.handleWheel, { passive: false });
     }
   }
-  
+
 
   handleWheel = e => {
     const { traditionalZoom } = this.props
 
-    
+
 
     // zoom in the time dimension
     if (e.ctrlKey || e.metaKey || e.altKey) {
@@ -63,6 +63,7 @@ class ScrollElement extends Component {
   }
 
   handleMouseDown = e => {
+    console.log("mouse down")
     if (e.button === 0) {
       this.dragStartPosition = e.pageX
       this.dragLastPosition = e.pageX
@@ -82,6 +83,7 @@ class ScrollElement extends Component {
   }
 
   handleMouseUp = () => {
+    console.log("mouse up")
     this.dragStartPosition = null
     this.dragLastPosition = null
 
@@ -100,6 +102,7 @@ class ScrollElement extends Component {
   }
 
   handleTouchStart = e => {
+    console.log("touch")
     if (e.touches.length === 2) {
       e.preventDefault()
 
@@ -168,8 +171,8 @@ class ScrollElement extends Component {
     }
   }
 
-  componentWillUnmount(){
-    if(this.scrollComponent){
+  componentWillUnmount() {
+    if (this.scrollComponent) {
       this.scrollComponent.removeEventListener('wheel', this.handleWheel);
     }
   }
@@ -180,7 +183,7 @@ class ScrollElement extends Component {
 
     const scrollComponentStyle = {
       width: `${width}px`,
-      height: `${height + 20}px`, //20px to push the scroll element down off screen...?
+      height: `${height}px`, //20px to push the scroll element down off screen...?
       cursor: isDragging ? 'move' : 'default',
       position: 'relative'
     }
