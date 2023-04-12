@@ -722,7 +722,7 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   handleRowMouseMove = (e) => {
-    this.props.onCanvasMouseMove(this.getTimeFromRowClickEvent(e))
+    this.props.onCanvasMouseMove(this.getTimeFromRowClickEvent(e), this.state.dragStart)
   }
 
 
